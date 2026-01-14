@@ -1,16 +1,18 @@
 from flask import Flask, render_template, request, redirect, jsonify, make_response, json
 from models import Usuario, Tarea
 from settings import Session, session
-from flask_limiter import Limiter
-app = Flask(__name__)
+#from flask_limiter import Limiter
+from app_instance import app
 
 
-@app.route("/create", methods= ["POST"])
-@limiter.limit("5 per minute")
+
+
+@app.route("/Usuario/create", methods= ["POST"])
+#@limiter.limit("5 per minute")
 def Crear():
 
     
-        try:
+        try:    
 
             if not request.is_json:
                 return make_response(jsonify({"Mensaje": "El contenido debe ser JSON"}), 400)
@@ -25,7 +27,8 @@ def Crear():
                 Rol = data["Rol usuario"]
                 
                 )
-            
+            usuario.contraseña = data["password"]
+
 
             session.add(usuario)
             session.commit()
@@ -41,20 +44,20 @@ def Crear():
 
     
 
-@app.route("/read", methods= ["GET"])
+@app.route("/Usuario/read", methods= ["GET"])
 def Obtener():
 
     try:
         Usuarios = session.query(Usuario).all()
 
-        return make_response(jsonify([Usuario.json() for Usuario in Usuarios]), 200)
+        return make_response(jsonify([u.json() for u in Usuarios]), 200)
     except Exception as e:
         return make_response(jsonify({'Mensaje': 'Error al obtener los usuarios'}), 500)
 
         
     
 
-@app.route("/update", methods= ["PUT"])
+@app.route("/Usuario/update", methods= ["PUT"])
 def Actualizar():
     try:
 
@@ -72,7 +75,10 @@ def Actualizar():
         User.Nombre = data.get("Nuevo nombre", User.Nombre)
         User.Apellidos = data.get("Nuevo apellido", User.Apellidos)
         User.Email = data.get("Nuevo email", User.Email)
-        User.Rol = data.get("Nuevo rol", User.Rol)
+        User.Rol = data.get("Nuevo rol", User.Rol)  
+        if "Nueva contraseña" in data:
+         User.contraseña = data["Nueva contraseña"]
+
 
         session.commit()
         return make_response(jsonify({"Mensaje": "Usuario actualizado "}), 200)
@@ -85,15 +91,21 @@ def Actualizar():
 
 
 
-@app.route("/delete", methods= ["DELETE"])
+@app.route("/Usuario/delete", methods= ["DELETE"])
 def Eliminar():
     try:
-        ID_usuario = request.get_json().get("id")
+        data = request.get_json() 
+    
+        if not data or "id" not in data:
+            return make_response(jsonify({"Mensaje": "No se permite campos vacios"}))
+        
+        ID_usuario = data['id']
         User = session.query(Usuario).filter_by(id = ID_usuario).first()
 
         if not User:
             return make_response(jsonify({"Mensaje": "Usuario no encontrado"}), 404)
-   
+    
+        
         session.delete(User)
         session.commit()
 

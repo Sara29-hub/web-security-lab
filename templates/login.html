@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+</head>
+<body>
+    <div class="login-container">
+        <h1>Iniciar sesion</h1>
+        <form id="formLogin" autocomplete="off">
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" id="email" name="email" placeholder="Introduce tu mail " required>
+            </div>
+            <div>
+                <label for="contraseña">Contraseña:</label>
+                <input type="password" id="contraseña" name="contraseña" placeholder="Introduce tu contraseña " required>
+            </div>
+            <button type="submit">Entrar</button>
+            <div class="register-link">
+                ¿No tienes cuenta?
+            <a href="{{ url_for('register') }}">Regístrate</a>
+            </div>
+
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='login.js') }}"></script>
+
+</body>
+</html>

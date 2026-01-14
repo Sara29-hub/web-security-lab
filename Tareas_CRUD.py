@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify, make_response
 from models import Tarea, Usuario
 from settings import session
-app = Flask(__name__)
+from app_instance import app
 
+print(">>> CARGANDO Tareas_CRUD")
 
-
-@app.route("/create", methods = "POST")
+@app.route("/tareas/create", methods = ["POST"])
 def crear():
     try:
 
@@ -16,10 +16,8 @@ def crear():
 
         tarea = Tarea(
 
-            Nombre_tarea = data["Nombre_tarea"],
-            Creado_tarea = data["Creado_tarea"],
-            Actualizado_tarea = data["Actualizado_tarea"],
-            Contenido_tarea = data["Contenido_tarea"]
+            Nombre = data["Nombre"],
+            Contenido = data["Contenido"]
 
         )
 
@@ -38,12 +36,12 @@ def crear():
 
 
 
-@app.route("/read", methods = "GET")
+@app.route("/tareas/read", methods = ["GET"])
 def obtener():
      try:
         Tareas = session.query(Tarea).all()
 
-        return make_response(jsonify([Usuario.json() for Usuario in Tareas]), 200)
+        return make_response(jsonify([Tarea.json() for Tarea in Tareas]), 200)
      except Exception as e:
         return make_response(jsonify({'Mensaje': 'Error al obtener las tareas'}), 500)
 
@@ -53,7 +51,7 @@ def obtener():
 
 
 
-@app.route("/update", methods = "PUT")
+@app.route("/tareas/update", methods = ["PUT"])
 def actualizar():
     try:
         data = request.get_json()
@@ -64,9 +62,9 @@ def actualizar():
         if not tarea:
             return make_response(jsonify({"Mensaje": "Tarea no encontrada"}), 404)
         
-        Tarea.Contenido = data.get("Nuevo contenido", Tarea.Contenido)
-        Tarea.Nombre = data.get("Nuevo nombre", Tarea.Nombre)
-        Tarea.Update_at = data.get("Fecha modificacion", Tarea.Update_at)
+        tarea.Contenido = data.get("Nuevo contenido", tarea.Contenido)
+        tarea.Nombre = data.get("Nuevo nombre", tarea.Nombre)
+        
 
         session.commit()
         return make_response(jsonify({"Mensaje": "Tarea actualizada"}), 200)
@@ -86,11 +84,11 @@ def actualizar():
 
 
 
-@app.route("/delete", methods = "DELETE")
+@app.route("/tareas/delete", methods = ["DELETE"])
 def eliminar():
     try:
         Id_tarea = request.get_json().get("id")
-        tarea = session.query(Tarea).filter_by(id = Id_tarea).first
+        tarea = session.query(Tarea).filter_by(id = Id_tarea).first()
 
         if not tarea:
             return make_response(jsonify({"Mensaje": "No se ha encontrado la tarea"}), 404)
