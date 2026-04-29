@@ -1,11 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pagina principal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='tasks.css') }}">
 </head>
 <body>
-    <h1>Agenda profesional</h1>
+
+    <aside class="sidebar">
+        <h2>Barra Lateral</h2>
+        <ul>
+            <li><a href="{{ url_for('calendario') }}">Calendario</a></li>
+        </ul>
+    </aside>
+
+    <header class="top-bar">
+    <div class="user-section" onclick="toggleMenu()">
+        <span class="user-name">{{ session['usuario'] }}</span>
+        <div class="user-avatar">👤</div>
+            <div id="userDropdown" class="dropdown-content">
+                <hr>
+                <a href="#" id="btnLogout">Cerrar Sesión</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="contenido-principal">
+        <h1>Bienvenida a tu agenda</h1>
+        <p>Usa el calendario para gestionar tus tareas.</p>
+    </main>
+
+    <script src="{{ url_for('static', filename='tasks.js') }}"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify, make_response, json
 from models import Usuario, Tarea
 from settings import Session, session
+from decorators import admin_required, login_required
 #from flask_limiter import Limiter
 from app_instance import app
 
@@ -24,7 +25,7 @@ def Crear():
                 Nombre = data["Nombre usuario"],
                 Apellidos = data["Apellidos usuario"],
                 Email = data["Email usuario"],
-                Rol = data["Rol usuario"]
+                Rol = "usuario"
                 
                 )
             usuario.contraseña = data["password"]
@@ -45,10 +46,11 @@ def Crear():
     
 
 @app.route("/Usuario/read", methods= ["GET"])
+@admin_required
 def Obtener():
 
     try:
-        Usuarios = session.query(Usuario).all()
+        Usuarios = session.query(Usuario).all() 
 
         return make_response(jsonify([u.json() for u in Usuarios]), 200)
     except Exception as e:
@@ -58,6 +60,7 @@ def Obtener():
     
 
 @app.route("/Usuario/update", methods= ["PUT"])
+@login_required
 def Actualizar():
     try:
 
@@ -92,6 +95,7 @@ def Actualizar():
 
 
 @app.route("/Usuario/delete", methods= ["DELETE"])
+@login_required
 def Eliminar():
     try:
         data = request.get_json() 

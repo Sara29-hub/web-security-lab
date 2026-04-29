@@ -39,11 +39,37 @@ form.addEventListener('submit', async (e) =>{
         });
 
         const resultado = await respuesta.json();
+        const mensaje = document.getElementById("mensajeRegistro");
+
+        if (respuesta.ok) {
+            mensaje.textContent = "Cuenta creada con éxito. Ya puedes iniciar sesión.";
+            mensaje.classList.remove("oculto");
+            mensaje.classList.add("exito");
+            mensaje.classList.remove("error");
+
+        } else {
+            mensaje.textContent = resultado.Mensaje || "Error al crear el usuario";
+            mensaje.classList.remove("oculto");
+            mensaje.classList.add("error");
+            mensaje.classList.remove("exito");
+        }
+
+
         if (respuesta.ok){
+
+            setTimeout(() => {
+             window.location.href = "/";
+             }, 3000); 
+            
+        }else{
+            alert("Error al registrarse")
+        }
+
+        /*if (respuesta.ok){
             alert("Usuario creado")
         }else {
             alert(resultado.Mensaje)
-        }
+        }*/
 
     } catch (error) {
         alert("Error conectando con el servidor");
