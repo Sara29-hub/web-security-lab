@@ -1,7 +1,8 @@
-from models import Usuario
-from settings import session as db_session
+from models import Usuario, Base
+from settings import engine, session as db_session
 
 def Admin():
+    Base.metadata.create_all(engine)
 
     usuario = Usuario(
 
@@ -11,7 +12,8 @@ def Admin():
         Rol = "admin"
 
         )
-    usuario.contraseña = "Contraseña1234"
+    #Contraseña de ejemplo
+    usuario.contraseña = "AdminPassword123!"
 
     db_session.add(usuario)
     db_session.commit()
