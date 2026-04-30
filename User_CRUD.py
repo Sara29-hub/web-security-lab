@@ -2,14 +2,14 @@ from flask import Flask, render_template, request, redirect, jsonify, make_respo
 from models import Usuario, Tarea
 from settings import Session, session
 from decorators import admin_required, login_required
-#from flask_limiter import Limiter
+from app_instance import limiter
 from app_instance import app
 
 
 
 
 @app.route("/Usuario/create", methods= ["POST"])
-#@limiter.limit("5 per minute")
+@limiter.limit("5 per minute")
 def Crear():
 
     
