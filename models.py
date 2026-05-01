@@ -37,31 +37,10 @@ class Usuario(Base):
 
 
 
-
-    
-        
-
-    #SETTER DE CONTRASEÑA MAL HECHO     
-   # @contraseña.setter
-   # def contraseña (self, contraseña_entexto):
-        
-      #  codigo_Bytes = contraseña_entexto.encode('utf-8')
-
-       # hashed_bytes = bcrypt.generate_password_hash(codigo_Bytes)
-
-       # self.Contraseña_hash = hashed_bytes.decode('utf-8')
-
-    #Autenticar mal hecho 
-    #def autenticar(self, contraseña_entexto):
-        #return bcrypt.check_password_hash(self.Contraseña_hash, contraseña_entexto)
    
-   
-   
-   
-    #Setter de contraseña bien hecho
     @contraseña.setter
     def contraseña(self, contraseña_entexto):
-        # Flask-Bcrypt espera un string, y él mismo maneja los bytes
+        
         self.Contraseña_hash = bcrypt.generate_password_hash(contraseña_entexto).decode('utf-8')
 
 
@@ -96,15 +75,6 @@ class Tarea(Base):
         }
 
 
-if __name__ == '__main__':
 
-   Base.metadata.drop_all(engine)
-   Base.metadata.create_all(engine)
     
-   # user1 = Usuario(Nombre = "Sara", Apellidos= "Lo que sea", Email= "Holaaa29@gmail.com", Rol = "Administradora",  )
-    #Tarea1 = Tarea(id = 1, Nombre = " Apuntes", Contenido= " Intentando hace mas cosas sin saturarme ")
 
-   # session.add(user1)
-   # session.add(Tarea1)
-
-   # session.commit()
