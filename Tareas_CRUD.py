@@ -5,7 +5,7 @@ from datetime import datetime
 from settings import session as db_session
 from app_instance import app
 
-print(">>> CARGANDO Tareas_CRUD")
+
 
 @app.route("/tareas/create", methods = ["POST"])
 def crear():
@@ -53,7 +53,7 @@ def crear():
 @app.route("/tareas/read", methods = ["GET"])
 def obtener():
      try:
-        #Tareas = session.query(Tarea).all()
+        
 
         user_id = flask_session.get("user_id")
         if not user_id:
@@ -90,7 +90,7 @@ def actualizar():
         if not ID_tarea:
             return make_response(jsonify({"Mensaje": "Falta el id"}), 400)
 
-        #Nueva comprobacion de ataque IDOR
+        
         user_id = flask_session.get("user_id")
         if not user_id:
             return make_response(jsonify({"Mensaje": "No autenticado"}), 401)
@@ -147,7 +147,7 @@ def eliminar():
         if not tarea:
             return make_response(jsonify({"Mensaje": "No se ha encontrado la tarea"}), 404)
         
-        #Nueva comprobacion de ataque IDOR
+       
       
         db_session.delete(tarea)
         db_session.commit()
