@@ -79,6 +79,8 @@ The app will be available at `http://127.0.0.1:5000`
 - **Exploitation:** Using Postman, a GET request was made to `/Usuario/read` without any session cookie, obtaining a list with name, surname, email, role and creation date of all users.
 - **Fix:** The `@admin_required` decorator was implemented on the route, restricting access only to authenticated users with administrator role.
 
+![Missing Auth Attack](assets/Capturadepantalla1.png)
+![Missing Auth Response](assets/Capturadepantalla2.png)
 
 
 ### Vulnerability 2: Privilege Escalation via Manipulated Registration
@@ -106,6 +108,8 @@ The app will be available at `http://127.0.0.1:5000`
 - **Exploitation:** Using Caido, the GET request to `/tareas/read` was intercepted and the Replay functionality was used to modify it by manually adding the `"usuario_id"` field with another user's ID.
 - **Result:** The application resisted the attack. The backend ignores any `usuario_id` sent in the request body and uses exclusively the ID stored in the Flask session.
 - **Conclusion:** IDOR protection is correctly implemented thanks to the use of `flask_session['user_id']` instead of trusting client-sent data.
+![IDOR Caido 1](assets/Capturadepantalla4.png)
+![IDOR Caido 2](assets/Capturadepantalla5.png)
 
 ### Vulnerability 6: Hardcoded Secret Key
 - **Type:** Security Misconfiguration (OWASP A05:2021)
@@ -118,6 +122,8 @@ The app will be available at `http://127.0.0.1:5000`
 - **Description:** The `/Usuario/create` route had no request limit, allowing an attacker to make an unlimited number of requests in a short time to create bot accounts, saturate the server or perform automated brute force attacks.
 - **Exploitation:** Using Postman, multiple consecutive requests were made to `/Usuario/create` without any restriction, confirming the server accepted them all without limit.
 - **Fix:** The `flask-limiter` library was implemented adding the `@limiter.limit("5 per minute")` decorator, allowing only 5 requests per minute from the same IP. From the sixth request onwards the server returns a **429 Too Many Requests** error.
+
+![Rate Limiting 429](assets/Capturadepantalla3.png)
 
 ## 5. Conclusions
 
