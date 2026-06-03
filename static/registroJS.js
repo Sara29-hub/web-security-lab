@@ -65,11 +65,7 @@ form.addEventListener('submit', async (e) =>{
             alert("Error al registrarse")
         }
 
-        /*if (respuesta.ok){
-            alert("Usuario creado")
-        }else {
-            alert(resultado.Mensaje)
-        }*/
+       
 
     } catch (error) {
         alert("Error conectando con el servidor");
@@ -80,7 +76,7 @@ form.addEventListener('submit', async (e) =>{
 
 
 
-// === Mostrar / ocultar contraseña ===
+
 const toggleButtons = document.querySelectorAll('.toggle-password');
 
 toggleButtons.forEach(button => {
