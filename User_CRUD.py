@@ -77,8 +77,7 @@ def Actualizar():
 
         User.Nombre = data.get("Nuevo nombre", User.Nombre)
         User.Apellidos = data.get("Nuevo apellido", User.Apellidos)
-        User.Email = data.get("Nuevo email", User.Email)
-        User.Rol = data.get("Nuevo rol", User.Rol)  
+        User.Email = data.get("Nuevo email", User.Email) 
         if "Nueva contraseña" in data:
          User.contraseña = data["Nueva contraseña"]
 
